@@ -1,0 +1,4 @@
+en:
+  themes:
+    <%= @theme_name %>:
+      hello: "Hello world from the <%= @theme_name %> theme"
