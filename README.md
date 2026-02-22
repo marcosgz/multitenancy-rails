@@ -7,7 +7,7 @@ A Rails engine-based multitenancy gem that provides theme isolation through dyna
 Add the gem to your `Gemfile`:
 
 ```ruby
-gem "multitenancy-rails", path: "vendor/gems/multitenancy"
+gem "multitenancy-rails"
 ```
 
 ## Quick start
