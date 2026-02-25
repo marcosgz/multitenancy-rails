@@ -26,10 +26,6 @@ module Multitenancy
       path.relative_path_from(::Rails.root)
     end
 
-    def mount_path
-      "/#{name}"
-    end
-
     def name
       path.basename.to_s.parameterize
     end

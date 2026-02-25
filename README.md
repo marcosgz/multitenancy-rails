@@ -32,11 +32,22 @@ Create the route drawing file at `config/routes/multitenancy.rb`:
 
 ```ruby
 Multitenancy.themes.each do |theme|
-  mount theme.engine, at: theme.mount_path
+  mount theme.engine, at: "/#{theme.name}"
 end
 ```
 
 Start the server and visit `/my-store` to see the theme in action.
+
+Or using subdomain
+
+```ruby
+Multitenancy.themes.each do |theme|
+  constraints subdomain: theme.name do
+    mount theme.engine, at: "/"
+  end
+end
+
+Start the server and visit http://my-store.localhost:3000 to see the theme. (You may need to add to /etc/hosts)
 
 ## Theme directory structure
 

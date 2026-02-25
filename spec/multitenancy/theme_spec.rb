@@ -23,12 +23,6 @@ RSpec.describe Multitenancy::Theme do
     end
   end
 
-  describe "#mount_path" do
-    it "returns /name" do
-      expect(theme.mount_path).to eq("/acme")
-    end
-  end
-
   describe "#relative_path" do
     it "returns path relative to Rails.root" do
       expect(theme.relative_path).to eq(Pathname.new("themes/acme"))
