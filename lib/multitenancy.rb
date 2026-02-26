@@ -45,6 +45,18 @@ module Multitenancy
     app/structs
     app/models
     app/mailers
+    app/presenters
+    app/decorators
+    app/queries
+    app/resources
+    app/serializers
+    app/transformers
+    app/validators
+    app/workers
+    app/jobs
+    app/mailers
+    app/notifications
+    app/policies
     lib
   ]
 
