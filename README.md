@@ -46,6 +46,7 @@ Multitenancy.themes.each do |theme|
     mount theme.engine, at: "/"
   end
 end
+```
 
 Start the server and visit http://my-store.localhost:3000 to see the theme. (You may need to add to /etc/hosts)
 
@@ -53,7 +54,7 @@ Start the server and visit http://my-store.localhost:3000 to see the theme. (You
 
 Each theme is a self-contained directory under `themes/` that mirrors a Rails application structure:
 
-```
+```bash
 themes/my_store/
 ├── app/
 │   ├── controllers/
