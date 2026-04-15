@@ -10,6 +10,7 @@ module Multitenancy
       engine = module_parent::Engine
       prepend_view_path engine.root.join("app/views")
       layout "application"
+      before_action { engine.importmap_reloader&.execute_if_updated }
     end
 
     private

@@ -96,6 +96,28 @@ RSpec.describe Multitenancy::Integrations::Importmap do
 
           expect(app.reloaders).not_to be_empty
         end
+
+        it "sets importmap_reloader on the engine when cache_classes is false" do
+          allow(app.config).to receive(:cache_classes).and_return(false)
+
+          Multitenancy.reset!
+          Multitenancy.themes.each { |t| t.bootstrap(app) }
+          described_class.call(app)
+
+          theme = Multitenancy.themes.first
+          expect(theme.engine.importmap_reloader).to be_a(Multitenancy::Integrations::Importmap::Reloader)
+        end
+
+        it "does not set importmap_reloader when cache_classes is true" do
+          allow(app.config).to receive(:cache_classes).and_return(true)
+
+          Multitenancy.reset!
+          Multitenancy.themes.each { |t| t.bootstrap(app) }
+          described_class.call(app)
+
+          theme = Multitenancy.themes.first
+          expect(theme.engine.importmap_reloader).to be_nil
+        end
       end
     end
   end
