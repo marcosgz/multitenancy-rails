@@ -40,6 +40,7 @@ module Multitenancy
           theme.engine.singleton_class.send(:attr_accessor, :importmap)
           theme.engine.singleton_class.send(:attr_accessor, :importmap_paths)
           theme.engine.singleton_class.send(:attr_accessor, :importmap_cache_sweepers)
+          theme.engine.singleton_class.send(:attr_accessor, :importmap_reloader)
           theme.engine.importmap = ::Importmap::Map.new
 
           # Store theme importmap paths separately — engine.config.importmap.paths
@@ -60,6 +61,7 @@ module Multitenancy
           # Development reloader: re-draw theme importmap when pins or JS change
           unless app.config.cache_classes
             Multitenancy::Integrations::Importmap::Reloader.new(app, theme.engine).tap do |reloader|
+              theme.engine.importmap_reloader = reloader
               app.reloaders << reloader
               app.reloader.to_run { reloader.execute_if_updated }
             end
