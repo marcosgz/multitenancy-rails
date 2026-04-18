@@ -26,8 +26,12 @@ module Multitenancy
     end
 
     def themes
-      @themes ||= themes_root.children.select(&:directory?).map do |theme|
-        Multitenancy::Theme.new(path: theme)
+      @themes ||= if themes_root.exist?
+        themes_root.children.select(&:directory?).map do |theme|
+          Multitenancy::Theme.new(path: theme)
+        end
+      else
+        []
       end
     end
 
