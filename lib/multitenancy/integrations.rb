@@ -6,6 +6,7 @@ module Multitenancy
     autoload :Importmap, "multitenancy/integrations/importmap"
     autoload :Rails, "multitenancy/integrations/rails"
     autoload :TailwindCss, "multitenancy/integrations/tailwind_css"
+    autoload :Minitest, "multitenancy/integrations/minitest"
     autoload :RSpec, "multitenancy/integrations/rspec"
   end
 end

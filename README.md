@@ -77,8 +77,11 @@ themes/my_store/
 │   ├── importmap.rb                   # When using importmap
 │   └── locales/
 │       └── en.yml
-└── spec/
-    └── factories/                     # When using FactoryBot
+├── spec/
+│   └── factories/                     # When using FactoryBot (RSpec)
+└── test/                              # When using Minitest
+    ├── controllers/
+    └── models/
 ```
 
 ## How it works
@@ -96,11 +99,12 @@ The gem hooks into Rails through a Railtie and initializes in two phases:
    - Registers asset paths with Propshaft
 2. **FactoryBot integration** adds each theme's `spec/factories` to the factory lookup paths
 3. **RSpec integration** configures theme spec directories for automatic discovery
+4. **Minitest integration** configures theme test directories for automatic discovery via `rails test`
 
 **Phase 2 — `after_initialize`:**
 
-4. **Importmap integration** creates per-theme importmaps with development file watchers
-5. **TailwindCSS integration** excludes raw Tailwind input files from Propshaft and prepares build output directories
+5. **Importmap integration** creates per-theme importmaps with development file watchers
+6. **TailwindCSS integration** excludes raw Tailwind input files from Propshaft and prepares build output directories
 
 ### Theme engine
 
@@ -344,6 +348,45 @@ The RSpec integration automatically discovers and includes theme specs in test r
 
 No configuration needed. Theme specs are discovered as long as a `spec/` directory exists inside the theme.
 
+### Minitest
+
+**Requires:** Rails test runner (included with `railties`)
+
+The Minitest integration automatically discovers and includes theme tests in `rails test` runs:
+
+- **`bin/rails test`** (no arguments) — runs `test/` from the main app plus `test/` from every theme
+- **`bin/rails test themes/blog`** — expands to `themes/blog/test` automatically
+- **Nested themes** — if theme names share a prefix (e.g., `blog` and `blog-admin`), running `bin/rails test themes/blog` also includes `themes/blog-admin/test`
+
+No configuration needed. Theme tests are discovered as long as a `test/` directory exists inside the theme and files follow the `*_test.rb` naming convention.
+
+**Theme test directory structure:**
+
+```
+themes/blog/
+└── test/
+    ├── controllers/
+    │   └── home_controller_test.rb
+    └── models/
+        └── post_test.rb
+```
+
+**Theme test example:**
+
+```ruby
+# themes/blog/test/controllers/home_controller_test.rb
+require "test_helper"
+
+module Themes::Blog
+  class HomeControllerTest < ActionDispatch::IntegrationTest
+    test "gets root" do
+      get blog.root_path
+      assert_response :success
+    end
+  end
+end
+```
+
 ### FactoryBot
 
 **Requires:** `factory_bot_rails` gem
@@ -517,6 +560,7 @@ Use it in a theme view — the controller is scoped to this theme only:
 | `importmap-rails`  | Importmap      | Per-theme JavaScript with ESM    |
 | `tailwindcss-rails` | TailwindCSS   | Per-theme Tailwind CSS builds    |
 | `rspec-rails`      | RSpec          | Auto-discover theme specs        |
+| `railties` (test runner) | Minitest | Auto-discover theme tests        |
 | `factory_bot_rails`| FactoryBot     | Auto-discover theme factories    |
 
 All integrations use guard clauses and are silently skipped when their respective gems are not installed.

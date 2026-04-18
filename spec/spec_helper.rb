@@ -13,6 +13,7 @@ require "multitenancy/integrations/factory_bot"
 require "multitenancy/integrations/rspec"
 require "multitenancy/integrations/importmap"
 require "multitenancy/integrations/tailwind_css"
+require "multitenancy/integrations/minitest"
 
 Dir[File.join(__dir__, "support", "**", "*.rb")].each { |f| require f }
 
