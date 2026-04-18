@@ -6,6 +6,7 @@ module Multitenancy
       Integrations::Rails.call(app)
       Integrations::FactoryBot.call(app)
       Integrations::RSpec.call(app)
+      Integrations::Minitest.call(app)
 
       # This is not used within multitenancy. Rather, this allows OTHER tools to
       # hook into multitenancy via ActiveSupport hooks.
