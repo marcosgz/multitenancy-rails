@@ -2,6 +2,10 @@
 
 A Rails engine-based multitenancy gem that provides theme isolation through dynamically created Rails engines. Each theme lives in its own directory under `themes/` and gets its own namespace, routes, controllers, views, assets, JavaScript, and locales — all automatically discovered and wired up at boot time.
 
+## Documentation
+
+Full guides, theme generator reference, integrations, and rake tasks are published at **[gems.marcosz.com.br/multitenancy-rails](https://gems.marcosz.com.br/multitenancy-rails/)** — part of the [marcosgz Ruby gem catalogue](https://gems.marcosz.com.br).
+
 ## Installation
 
 Add the gem to your `Gemfile`:
