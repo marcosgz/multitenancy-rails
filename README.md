@@ -391,6 +391,20 @@ module Themes::Blog
 end
 ```
 
+### ViewComponent
+
+**Requires:** `view_component` gem
+
+Each theme can override any shared component by defining one with the same base name in its own namespace, and the `theme_component` helper resolves the override first:
+
+```erb
+<%= render theme_component(:story_card, story: @story) %>
+```
+
+Resolution order: `Themes::<CurrentTheme>::<Name>Component` → `<Name>Component`. The active theme is derived from the calling controller's class namespace, so no host-side wiring is needed. The integration registers the helper on `ActionController::Base`; the resolver does a fresh constant lookup on each call, so theme overrides added during development are picked up immediately.
+
+`app/components` is included in the default autoload paths, so theme components placed in `themes/<name>/app/components/` register with Zeitwerk under `Themes::<Name>` automatically.
+
 ### FactoryBot
 
 **Requires:** `factory_bot_rails` gem
@@ -563,6 +577,7 @@ Use it in a theme view — the controller is scoped to this theme only:
 |--------------------|----------------|----------------------------------|
 | `importmap-rails`  | Importmap      | Per-theme JavaScript with ESM    |
 | `tailwindcss-rails` | TailwindCSS   | Per-theme Tailwind CSS builds    |
+| `view_component`   | ViewComponent  | Theme-aware component overrides  |
 | `rspec-rails`      | RSpec          | Auto-discover theme specs        |
 | `railties` (test runner) | Minitest | Auto-discover theme tests        |
 | `factory_bot_rails`| FactoryBot     | Auto-discover theme factories    |

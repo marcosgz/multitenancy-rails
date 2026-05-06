@@ -6,6 +6,7 @@ require "rails/application"
 module Multitenancy
   extend ActiveSupport::Autoload
 
+  autoload :Components
   autoload :Controller
   autoload :Integrations
   autoload :Railtie
@@ -42,6 +43,7 @@ module Multitenancy
 
   @config = ActiveSupport::OrderedOptions.new
   @config.paths = %w[
+    app/components
     app/controllers
     app/channels
     app/helpers
