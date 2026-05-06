@@ -8,5 +8,6 @@ module Multitenancy
     autoload :TailwindCss, "multitenancy/integrations/tailwind_css"
     autoload :Minitest, "multitenancy/integrations/minitest"
     autoload :RSpec, "multitenancy/integrations/rspec"
+    autoload :ViewComponent, "multitenancy/integrations/view_component"
   end
 end

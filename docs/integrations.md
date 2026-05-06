@@ -114,6 +114,18 @@ FactoryBot.define do
 end
 ```
 
+## ViewComponent (`view_component`)
+
+Theme-aware component rendering. Each theme can override any shared component by defining one with the same base name in its own namespace, and the `theme_component` helper resolves the override first.
+
+```erb
+<%= render theme_component(:story_card, story: @story) %>
+```
+
+Resolution order: `Themes::<CurrentTheme>::<Name>Component` → `<Name>Component`. The active theme is read from the calling controller's class namespace.
+
+The integration registers the helper on `ActionController::Base` and clears the resolver cache on each Rails reload. See [components.md](components.md) for full usage.
+
 ## Writing a custom integration
 
 Follow the pattern used by every built-in integration: a class under `Multitenancy::Integrations::<Name>` with a `.call(app)` method, guarded against optional-gem absence:

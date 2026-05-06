@@ -14,6 +14,10 @@ require "multitenancy/integrations/rspec"
 require "multitenancy/integrations/importmap"
 require "multitenancy/integrations/tailwind_css"
 require "multitenancy/integrations/minitest"
+require "multitenancy/integrations/view_component"
+require "multitenancy/components"
+require "multitenancy/components/resolver"
+require "multitenancy/components/helper"
 
 Dir[File.join(__dir__, "support", "**", "*.rb")].each { |f| require f }
 

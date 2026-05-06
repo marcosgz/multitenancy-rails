@@ -16,6 +16,7 @@ module Multitenancy
     config.after_initialize do |app|
       Integrations::Importmap.call(app)
       Integrations::TailwindCss.call(app)
+      Integrations::ViewComponent.call(app)
     end
 
     rake_tasks do
