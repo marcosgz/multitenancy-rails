@@ -35,10 +35,6 @@ The first argument is the component's base name (snake-case symbol or string). R
 
 The active theme is derived from the calling controller's class namespace (`Themes::Community::HomeController#module_parent.name` → `"community"`). For controllers outside any `Themes::` namespace (e.g., main app), the helper falls through to the shared component.
 
-## Caching
-
-Resolutions are cached per `[theme, name]` pair using `Concurrent::Map`. The cache is cleared automatically on each Rails reload, so overrides added or removed in development are picked up without a server restart.
-
 ## Example: shared + override
 
 **Shared component** (`app/components/story_card_component.rb`):

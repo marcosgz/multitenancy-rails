@@ -6,12 +6,8 @@ module Multitenancy
       def self.call(app)
         return unless defined?(::ViewComponent::Base)
 
-        app.config.to_prepare do
-          ActionController::Base.helper(Multitenancy::Components::Helper)
-        end
-
-        app.reloader.to_run do
-          Multitenancy::Components::Resolver.clear_cache
+        ActiveSupport.on_load(:action_controller_base) do
+          helper Multitenancy::Components::Helper
         end
       end
     end

@@ -64,10 +64,7 @@ RSpec.describe Multitenancy::Components::Helper do
         end
         attr_reader :kwargs
       })
-      Multitenancy::Components::Resolver.clear_cache
     end
-
-    after { Multitenancy::Components::Resolver.clear_cache }
 
     it "instantiates the resolved component with the given kwargs" do
       component = context.theme_component(:story_card, title: "Hello")

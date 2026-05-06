@@ -9,8 +9,7 @@ RSpec.describe Multitenancy::Integrations::ViewComponent do
     context "when ViewComponent::Base is not defined" do
       it "no-ops" do
         hide_const("ViewComponent::Base") if defined?(::ViewComponent::Base)
-        expect(app.config).not_to receive(:to_prepare)
-        expect(app.reloader).not_to receive(:to_run)
+        expect(ActiveSupport).not_to receive(:on_load)
 
         expect { described_class.call(app) }.not_to raise_error
       end
@@ -21,28 +20,18 @@ RSpec.describe Multitenancy::Integrations::ViewComponent do
         stub_const("ViewComponent::Base", Class.new) unless defined?(::ViewComponent::Base)
       end
 
-      it "registers a to_prepare callback that adds the helper to ActionController::Base" do
-        prepare_block = nil
-        allow(app.config).to receive(:to_prepare) { |&blk| prepare_block = blk }
-        allow(app.reloader).to receive(:to_run)
+      it "registers the helper on ActionController::Base" do
+        captured_block = nil
+        allow(ActiveSupport).to receive(:on_load).with(:action_controller_base) do |&blk|
+          captured_block = blk
+        end
 
         described_class.call(app)
-        expect(prepare_block).not_to be_nil
+        expect(captured_block).not_to be_nil
 
-        expect(ActionController::Base).to receive(:helper).with(Multitenancy::Components::Helper)
-        prepare_block.call
-      end
-
-      it "registers a reloader callback that clears the resolver cache" do
-        allow(app.config).to receive(:to_prepare)
-        reloader_block = nil
-        allow(app.reloader).to receive(:to_run) { |&blk| reloader_block = blk }
-
-        described_class.call(app)
-        expect(reloader_block).not_to be_nil
-
-        expect(Multitenancy::Components::Resolver).to receive(:clear_cache)
-        reloader_block.call
+        receiver = Class.new
+        expect(receiver).to receive(:helper).with(Multitenancy::Components::Helper)
+        receiver.instance_exec(&captured_block)
       end
     end
   end

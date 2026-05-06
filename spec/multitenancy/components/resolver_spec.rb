@@ -3,9 +3,6 @@
 require_relative "../../spec_helper"
 
 RSpec.describe Multitenancy::Components::Resolver do
-  before { described_class.clear_cache }
-  after { described_class.clear_cache }
-
   def define_theme_component(theme, name, value = Class.new)
     Object.const_set(:Themes, Module.new) unless defined?(::Themes)
     ::Themes.const_set(theme, Module.new) unless ::Themes.const_defined?(theme, false)
@@ -49,36 +46,6 @@ RSpec.describe Multitenancy::Components::Resolver do
         expect { described_class.call(:nonexistent, theme_name: nil) }
           .to raise_error(NameError)
       end
-    end
-
-    context "caching" do
-      before { stub_const("StoryCardComponent", Class.new) }
-
-      it "caches resolution by [theme_name, name]" do
-        described_class.call(:story_card, theme_name: nil)
-        expect(described_class::CACHE.keys).to include([nil, :story_card])
-      end
-
-      it "stores distinct entries per theme_name" do
-        define_theme_component(:Community, :StoryCardComponent)
-
-        described_class.call(:story_card, theme_name: nil)
-        described_class.call(:story_card, theme_name: "community")
-
-        expect(described_class::CACHE.keys)
-          .to include([nil, :story_card], ["community", :story_card])
-      end
-    end
-  end
-
-  describe ".clear_cache" do
-    it "empties the cache" do
-      stub_const("StoryCardComponent", Class.new)
-      described_class.call(:story_card, theme_name: nil)
-      expect(described_class::CACHE).not_to be_empty
-
-      described_class.clear_cache
-      expect(described_class::CACHE).to be_empty
     end
   end
 end

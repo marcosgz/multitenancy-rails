@@ -401,7 +401,7 @@ Each theme can override any shared component by defining one with the same base 
 <%= render theme_component(:story_card, story: @story) %>
 ```
 
-Resolution order: `Themes::<CurrentTheme>::<Name>Component` → `<Name>Component`. The active theme is derived from the calling controller's class namespace, so no host-side wiring is needed. The integration registers the helper on `ActionController::Base` and clears the resolver cache on each reload (theme overrides added in development are picked up without a server restart).
+Resolution order: `Themes::<CurrentTheme>::<Name>Component` → `<Name>Component`. The active theme is derived from the calling controller's class namespace, so no host-side wiring is needed. The integration registers the helper on `ActionController::Base`; the resolver does a fresh constant lookup on each call, so theme overrides added during development are picked up immediately.
 
 `app/components` is included in the default autoload paths, so theme components placed in `themes/<name>/app/components/` register with Zeitwerk under `Themes::<Name>` automatically.
 
