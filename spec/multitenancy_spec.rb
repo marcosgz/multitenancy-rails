@@ -32,12 +32,41 @@ RSpec.describe Multitenancy do
       expect(Multitenancy.themes.first.name).to eq("alpha")
     end
 
-    it "memoizes the result" do
+    it "memoizes the result when no theme directories change" do
       create_theme_dir("alpha")
 
       first_call = Multitenancy.themes
       second_call = Multitenancy.themes
       expect(first_call).to equal(second_call)
+    end
+
+    it "discovers theme directories added after the first call" do
+      create_theme_dir("alpha")
+      first_call = Multitenancy.themes
+      expect(first_call.map(&:name)).to contain_exactly("alpha")
+
+      create_theme_dir("beta")
+      second_call = Multitenancy.themes
+      expect(second_call.map(&:name)).to contain_exactly("alpha", "beta")
+    end
+
+    it "drops theme directories that have been removed" do
+      alpha = create_theme_dir("alpha")
+      create_theme_dir("beta")
+      expect(Multitenancy.themes.map(&:name)).to contain_exactly("alpha", "beta")
+
+      FileUtils.rm_rf(alpha)
+      expect(Multitenancy.themes.map(&:name)).to contain_exactly("beta")
+    end
+
+    it "preserves theme instances across re-discovery so engine bootstrap survives" do
+      create_theme_dir("alpha")
+      original_alpha = Multitenancy.themes.find { |t| t.name == "alpha" }
+
+      create_theme_dir("beta")
+      reloaded_alpha = Multitenancy.themes.find { |t| t.name == "alpha" }
+
+      expect(reloaded_alpha).to equal(original_alpha)
     end
 
     it "returns empty array when themes directory has no subdirectories" do

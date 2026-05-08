@@ -26,17 +26,23 @@ module Multitenancy
     end
 
     def themes
-      @themes ||= if themes_root.exist?
-        themes_root.children.select(&:directory?).map do |theme|
-          Multitenancy::Theme.new(path: theme)
-        end
-      else
-        []
-      end
+      current_paths = themes_root.exist? ? themes_root.children.select(&:directory?).sort : []
+      keys = current_paths.map(&:to_s)
+
+      return @themes if @themes_keys == keys
+
+      @themes_cache ||= {}
+      current_paths.each { |path| @themes_cache[path.to_s] ||= Multitenancy::Theme.new(path: path) }
+      @themes_cache.delete_if { |key, _| !keys.include?(key) }
+
+      @themes_keys = keys
+      @themes = keys.map { |key| @themes_cache[key] }
     end
 
     def reset!
       @themes = nil
+      @themes_keys = nil
+      @themes_cache = nil
     end
   end
 
