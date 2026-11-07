@@ -1,4 +1,9 @@
-# Multitenancy
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/lockup-multitenancy-rails-on-dark.svg">
+    <img alt="Multitenancy for Rails" src="docs/brand/lockup-multitenancy-rails-on-light.svg" width="532">
+  </picture>
+</h1>
 
 A Rails engine-based multitenancy gem that provides theme isolation through dynamically created Rails engines. Each theme lives in its own directory under `themes/` and gets its own namespace, routes, controllers, views, assets, JavaScript, and locales — all automatically discovered and wired up at boot time.
 
