@@ -69,4 +69,4 @@ Visit `/storefront` — served by `Themes::Storefront::HomeController`.
 
 ## License
 
-MIT.
+GPL-3.0-or-later.

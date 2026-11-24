@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Multitenancy for Rails applications"
   spec.description = "Multitenancy for Rails applications"
   spec.homepage = "https://github.com/marcosgz/multitenancy-rails"
-  spec.license = "MIT"
+  spec.license = "GPL-3.0-or-later"
   spec.required_ruby_version = ">= 3.1"
 
   if spec.respond_to?(:metadata)

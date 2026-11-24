@@ -576,4 +576,4 @@ All integrations use guard clauses and are silently skipped when their respectiv
 
 ## License
 
-MIT
+GPL-3.0-or-later.
